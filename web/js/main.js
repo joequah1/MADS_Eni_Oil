@@ -291,17 +291,33 @@ eniOil.prototype.events = function () {
     this.form.addEventListener('submit', function (e) {
         e.preventDefault();
 
-        var name = document.getElementById('name').value;
-        var hp = document.getElementById('hp').value;
+        var nameEle = document.getElementById('name')
+        var hpEle = document.getElementById('hp')
+        nameEle.style.border = '';
+        hpEle.style.border = '';
+
+        var name = nameEle.value;
+        var hp = hpEle.value;
 
         console.log(name + ' ' + hp)
 
-        var url = 'https://www.mobileads.com/api/save_lf?contactEmail=dickale@imx.co.id,karima@imx.co.id,adhie@mobileads.com&gotDatas=1&element=[{%22fieldname%22:%22text_1%22,%22value%22:%22' + name + '%22},{%22fieldname%22:%22text_2%22,%22value%22:%22' + hp +  '%22}]&user-id=2901&studio-id=203&tab-id=1&trackid=2066&referredURL=Sample%20Ad%20Unit&callback=leadGenCallback';
+        if (/\S/.test(name) && /\S/.test(hp)) {
+            // string is not empty and not just whitespace
+            var url = 'https://www.mobileads.com/api/save_lf?contactEmail=dickale@imx.co.id,karima@imx.co.id,adhie@mobileads.com&gotDatas=1&element=[{%22fieldname%22:%22text_1%22,%22value%22:%22' + name + '%22},{%22fieldname%22:%22text_2%22,%22value%22:%22' + hp +  '%22}]&user-id=2901&studio-id=203&tab-id=1&trackid=2066&referredURL=Sample%20Ad%20Unit&callback=leadGenCallback';
 
-        /* tracker */
-        _this.app.tracker('E', 'form_submit');
+            /* tracker */
+            _this.app.tracker('E', 'form_submit');
 
-        _this.app.loadJs(url)  
+            _this.app.loadJs(url)  
+        } else {
+            if (!/\S/.test(name)) {
+                nameEle.style.border = '1px solid red';
+            }    
+
+            if (!/\S/.test(hp)) {
+                hpEle.style.border = '1px solid red';
+            }
+        }
     })
 }
 
